@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.waracle.androidtest"
-        minSdkVersion 14
+        minSdkVersion 17
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -19,7 +19,16 @@ android {
     }
 }
 
+ext {
+    androidSupportVersion = "27.1.1"
+    constraintLayoutVersion = '1.1.3'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation "com.android.support:appcompat-v7:$androidSupportVersion"
+    implementation "com.android.support:recyclerview-v7:$androidSupportVersion"
+    implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
+    implementation "com.android.support:cardview-v7:$androidSupportVersion"
+
 }

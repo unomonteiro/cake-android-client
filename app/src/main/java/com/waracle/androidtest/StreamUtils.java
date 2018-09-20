@@ -14,6 +14,9 @@ public class StreamUtils {
     private static final String TAG = StreamUtils.class.getSimpleName();
 
     // Can you see what's wrong with this???
+    // while (true) is confusing
+    // It's reading the stream twice which leads to Big(O) time performance issues
+    //
     public static byte[] readUnknownFully(InputStream stream) throws IOException {
         // Read in stream of bytes
         ArrayList<Byte> data = new ArrayList<>();

@@ -3,6 +3,18 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="cardViewStyle">@style/CardView</item>
+    </style>
+
+    <style name="recycler_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingTop">@dimen/dimen8dp</item>
+        <item name="android:paddingBottom">@dimen/dimen8dp</item>
+        <item name="android:paddingStart">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingEnd">@dimen/activity_horizontal_margin</item>
+
+        <item name="android:clipToPadding">false</item>
     </style>
 
 </resources>
