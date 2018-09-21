@@ -84,12 +84,15 @@ public class ImageLoader {
 
             // Can you think of a way to make the entire
             // HTTP more efficient using HTTP headers??
+            connection.setUseCaches(true);
+
 
             int responseCode = connection.getResponseCode();
             switch (responseCode) {
                 case HttpURLConnection.HTTP_OK:
                     inputStream = connection.getInputStream();
                     return StreamUtils.extractBytes(inputStream);
+                case HttpURLConnection.HTTP_MOVED_TEMP:
                 case HttpURLConnection.HTTP_MOVED_PERM:
                     return loadImageData(connection.getHeaderField("Location"));
                 default:
