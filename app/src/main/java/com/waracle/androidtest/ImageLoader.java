@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.LruCache;
 import android.widget.ImageView;
 
@@ -51,18 +52,23 @@ public class ImageLoader {
      * @param imageView view to set image too.
      */
     public void load(String url, final ImageView imageView) {
-        if (TextUtils.isEmpty(url)) {
-            throw new InvalidParameterException("URL is empty!");
-        }
 
         // Can you think of a way to improve loading of bitmaps
         // that have already been loaded previously??
         // https://developer.android.com/topic/performance/graphics/cache-bitmap
         Bitmap cachedBitmap = mBitmapCache.get(url);
         if (cachedBitmap == null) {
-            mExecutor.submit(new ImageLoaderTask(url, bitmap -> {
-                mBitmapCache.put(url, bitmap);
-                setImageView(imageView, bitmap);
+            mExecutor.submit(new ImageLoaderTask(url, new ImageLoaderCallback() {
+                @Override
+                public void imageLoaded(Bitmap bitmap) {
+                    mBitmapCache.put(url, bitmap);
+                    setImageView(imageView, bitmap);
+                }
+
+                @Override
+                public void imageFailed() {
+                    imageView.setImageResource(R.drawable.ic_cake);
+                }
             }));
         } else {
             setImageView(imageView, cachedBitmap);
@@ -112,6 +118,7 @@ public class ImageLoader {
 
     private interface ImageLoaderCallback {
         void imageLoaded(Bitmap bitmap);
+        void imageFailed();
     }
 
     private static class ImageLoaderTask implements Runnable {
@@ -128,10 +135,11 @@ public class ImageLoader {
         public void run() {
             byte[] imageBytes = loadImageData(mUrl);
             if (imageBytes == null) {
-                return;
+                handler.post(() -> mCallback.imageFailed());
+            } else {
+                Bitmap bitmap = convertToBitmap(imageBytes);
+                handler.post(() -> mCallback.imageLoaded(bitmap));
             }
-            final Bitmap bitmap = convertToBitmap(imageBytes);
-            handler.post(() -> mCallback.imageLoaded(bitmap));
         }
     }
 }

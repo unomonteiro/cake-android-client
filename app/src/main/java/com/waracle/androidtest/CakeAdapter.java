@@ -2,6 +2,7 @@ package com.waracle.androidtest;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,11 @@ public class CakeAdapter extends RecyclerView.Adapter<CakeAdapter.CakeViewHolder
     @Override
     public void onBindViewHolder(@NonNull CakeViewHolder holder, int position) {
         Cake cake = mItems.get(position);
-        ImageLoader.getInstance().load(cake.getImage(), holder.image);
+        holder.image.setTag(cake.getImage());
+        holder.image.setImageResource(R.drawable.ic_cake);
+        if (!TextUtils.isEmpty(cake.getImage())) {
+            ImageLoader.getInstance().load(cake.getImage(), holder.image);
+        }
         holder.title.setText(cake.getTitle());
         holder.desc.setText(cake.getDesc());
 
