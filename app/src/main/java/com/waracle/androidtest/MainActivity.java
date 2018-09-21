@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -15,6 +16,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import org.json.JSONException;
 
@@ -33,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private CakeAdapter mAdapter;
     private ArrayList<Cake> mData;
-
+    private Snackbar mSnackbar;
+    private CakeLoader mCakeLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +49,11 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new CakeAdapter();
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setHasFixedSize(true);
-        if (savedInstanceState == null) {
-            initLoaders();
+
+        mCakeLoader = new CakeLoader();
+
+        if (savedInstanceState == null || mAdapter.getItemCount() == 0) {
+            checkInternet();
         } else {
             mData = savedInstanceState.getParcelableArrayList(CAKE_LIST_KEY);
             mAdapter.setItems(mData);
@@ -88,15 +94,35 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
+            checkInternet();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void checkInternet() {
+        if (NetworkUtils.isOnline(this)) {
+            getSupportLoaderManager().restartLoader(CAKE_LOADER_ID, null, mCakeLoader);
+            if (mSnackbar != null) {
+                mSnackbar.dismiss();
+                mSnackbar = null;
+            }
+        } else {
+            showOfflineSnack();
+        }
+    }
+
+    private void showOfflineSnack() {
+        mSnackbar = Snackbar.make(findViewById(android.R.id.content),
+                R.string.check_internet, Snackbar.LENGTH_INDEFINITE);
+        mSnackbar.setAction(R.string.retry, v -> checkInternet());
+        mSnackbar.show();
+    }
+
     private void initLoaders() {
         getSupportLoaderManager().destroyLoader(CAKE_LOADER_ID);
-        getSupportLoaderManager().initLoader(CAKE_LOADER_ID, null, new CakeLoader());
+        getSupportLoaderManager().initLoader(CAKE_LOADER_ID, null, mCakeLoader);
     }
 
 

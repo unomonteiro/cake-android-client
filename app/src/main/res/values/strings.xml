@@ -2,4 +2,6 @@
     <string name="app_name">Cakes</string>
     <string name="action_refresh">Refresh</string>
     <string name="cake_picture_content">cake picture</string>
+    <string name="check_internet">Oops, no wifi no cakes!</string>
+    <string name="retry">retry</string>
 </resources>
