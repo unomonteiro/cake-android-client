@@ -2,10 +2,10 @@ package com.waracle.androidtest;
 
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 /**
  * Created by Riad on 20/05/2015.
@@ -15,27 +15,17 @@ public class StreamUtils {
 
     // Can you see what's wrong with this???
     // while (true) is confusing
-    // It's reading the stream twice which leads to Big(O) time performance issues
+    // It was reading the stream twice which leads to Big(O) time performance issues
     //
-    public static byte[] readUnknownFully(InputStream stream) throws IOException {
-        // Read in stream of bytes
-        ArrayList<Byte> data = new ArrayList<>();
-        while (true) {
-            int result = stream.read();
-            if (result == -1) {
-                break;
-            }
-            data.add((byte) result);
+    public static byte[] extractBytes(InputStream stream) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int read = 0;
+        while ((read = stream.read(buffer, 0, buffer.length)) != -1) {
+            baos.write(buffer, 0, read);
         }
-
-        // Convert ArrayList<Byte> to byte[]
-        byte[] bytes = new byte[data.size()];
-        for (int i = 0; i < bytes.length; i++) {
-            bytes[i] = data.get(i);
-        }
-
-        // Return the raw byte array.
-        return bytes;
+        baos.flush();
+        return baos.toByteArray();
     }
 
     public static void close(Closeable closeable) {

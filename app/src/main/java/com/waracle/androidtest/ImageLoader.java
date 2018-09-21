@@ -57,7 +57,7 @@ public class ImageLoader {
             // Can you think of a way to make the entire
             // HTTP more efficient using HTTP headers??
 
-            return StreamUtils.readUnknownFully(inputStream);
+            return StreamUtils.extractBytes(inputStream);
         } finally {
             // Close the input stream if it exists.
             StreamUtils.close(inputStream);
