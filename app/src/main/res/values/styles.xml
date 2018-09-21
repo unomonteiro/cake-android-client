@@ -9,12 +9,34 @@
     <style name="recycler_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:paddingTop">@dimen/dimen8dp</item>
-        <item name="android:paddingBottom">@dimen/dimen8dp</item>
+        <item name="android:paddingTop">@dimen/small</item>
+        <item name="android:paddingBottom">@dimen/small</item>
         <item name="android:paddingStart">@dimen/activity_horizontal_margin</item>
         <item name="android:paddingEnd">@dimen/activity_horizontal_margin</item>
-
         <item name="android:clipToPadding">false</item>
+    </style>
+
+    <style name="image_style">
+        <item name="android:layout_width">@dimen/dimen56dp</item>
+        <item name="android:layout_height">@dimen/dimen56dp</item>
+        <item name="android:padding">@dimen/micro</item>
+    </style>
+
+    <style name="title_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/medium</item>
+        <item name="android:layout_marginTop">@dimen/micro</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="description">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:maxLines">1</item>
     </style>
 
 </resources>

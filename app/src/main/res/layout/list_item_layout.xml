@@ -8,36 +8,25 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:contentDescription="@string/cake_picture_content"
-        android:padding="4dp"
         android:src="@drawable/ic_cake"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
+        android:contentDescription="@string/cake_picture_content"
+        tools:src="@tools:sample/avatars"
+        style="@style/image_style" />
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toTopOf="parent"
-        android:maxLines="1"
-        tools:text="@tools:sample/full_names" />
+        tools:text="@tools:sample/full_names"
+        style="@style/title_style"/>
 
     <TextView
         android:id="@+id/desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintStart_toStartOf="@+id/title"
         app:layout_constraintTop_toBottomOf="@+id/title"
-        android:maxLines="1"
-        tools:text="@tools:sample/lorem/random" />
+        tools:text="@tools:sample/lorem/random"
+        style="@style/description" />
 
 </android.support.constraint.ConstraintLayout>

@@ -52,9 +52,9 @@ public class CakeAdapter extends RecyclerView.Adapter<CakeAdapter.CakeViewHolder
     }
 
     class CakeViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        TextView desc;
-        ImageView image;
+        final TextView title;
+        final TextView desc;
+        final ImageView image;
 
         CakeViewHolder(View itemView) {
             super(itemView);

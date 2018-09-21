@@ -10,7 +10,7 @@ import java.io.InputStream;
 /**
  * Created by Riad on 20/05/2015.
  */
-public class StreamUtils {
+class StreamUtils {
     private static final String TAG = StreamUtils.class.getSimpleName();
 
     // Can you see what's wrong with this???

@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class JsonUtils {
+class JsonUtils {
 
         public static ArrayList<Cake> parseCakeList(String json) throws JSONException {
             ArrayList<Cake> cakeList = new ArrayList<>();

@@ -4,9 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Cake implements Parcelable {
-    private String title;
-    private String desc;
-    private String image;
+    private final String title;
+    private final String desc;
+    private final String image;
 
     Cake(String title, String desc, String image) {
         this.title = title;

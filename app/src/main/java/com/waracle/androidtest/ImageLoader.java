@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.TextUtils;
-import android.util.Log;
 import android.util.LruCache;
 import android.widget.ImageView;
 
@@ -14,7 +12,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.InvalidParameterException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,7 +19,7 @@ import java.util.concurrent.Executors;
  * Created by Riad on 20/05/2015.
  */
 public class ImageLoader {
-    private static ImageLoader sInstance =  new ImageLoader();
+    private static final ImageLoader sInstance =  new ImageLoader();
     private final LruCache<String, Bitmap> mBitmapCache;
 
     private ImageLoader() {
@@ -40,8 +37,6 @@ public class ImageLoader {
     public static ImageLoader getInstance() {
         return sInstance;
     }
-
-    private static final String TAG = ImageLoader.class.getSimpleName();
 
     private final ExecutorService mExecutor = Executors.newCachedThreadPool();
 
@@ -127,7 +122,7 @@ public class ImageLoader {
     private static class ImageLoaderTask implements Runnable {
         private final String mUrl;
         private final ImageLoaderCallback mCallback;
-        Handler handler = new Handler(Looper.getMainLooper());
+        final Handler handler = new Handler(Looper.getMainLooper());
 
         ImageLoaderTask(String url, ImageLoaderCallback callback) {
             mUrl = url;
@@ -138,7 +133,7 @@ public class ImageLoader {
         public void run() {
             byte[] imageBytes = loadImageData(mUrl);
             if (imageBytes == null) {
-                handler.post(() -> mCallback.imageFailed());
+                handler.post(mCallback::imageFailed);
             } else {
                 Bitmap bitmap = convertToBitmap(imageBytes);
                 handler.post(() -> mCallback.imageLoaded(bitmap));

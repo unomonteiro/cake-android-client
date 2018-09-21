@@ -16,7 +16,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import org.json.JSONException;
 
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int CAKE_LOADER_ID = 1;
     private static final String CAKE_LIST_KEY = "cake_list_key";
 
-    private RecyclerView mRecyclerView;
     private CakeAdapter mAdapter;
     private ArrayList<Cake> mData;
     private Snackbar mSnackbar;
@@ -44,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
-        mRecyclerView = findViewById(R.id.rv_cakes);
-        mRecyclerView.setLayoutManager(getDeviceLayoutManager(isTablet));
+        RecyclerView recyclerView = findViewById(R.id.rv_cakes);
+        recyclerView.setLayoutManager(getDeviceLayoutManager(isTablet));
         mAdapter = new CakeAdapter();
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setHasFixedSize(true);
 
         mCakeLoader = new CakeLoader();
 
@@ -80,20 +78,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_refresh) {
+        if (item.getItemId() == R.id.action_refresh) {
             checkInternet();
             return true;
         }
@@ -119,12 +110,6 @@ public class MainActivity extends AppCompatActivity {
         mSnackbar.setAction(R.string.retry, v -> checkInternet());
         mSnackbar.show();
     }
-
-    private void initLoaders() {
-        getSupportLoaderManager().destroyLoader(CAKE_LOADER_ID);
-        getSupportLoaderManager().initLoader(CAKE_LOADER_ID, null, mCakeLoader);
-    }
-
 
     class CakeLoader implements LoaderManager.LoaderCallbacks<ArrayList<Cake>> {
 
