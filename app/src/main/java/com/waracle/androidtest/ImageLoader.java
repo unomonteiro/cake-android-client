@@ -84,8 +84,8 @@ public class ImageLoader {
 
             // Can you think of a way to make the entire
             // HTTP more efficient using HTTP headers??
+            // more info at https://developer.android.com/training/efficient-downloads/redundant_redundant
             connection.setUseCaches(true);
-
 
             int responseCode = connection.getResponseCode();
             switch (responseCode) {
