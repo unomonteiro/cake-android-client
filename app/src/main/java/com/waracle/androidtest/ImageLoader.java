@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.LruCache;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -21,8 +22,19 @@ import java.util.concurrent.Executors;
  */
 public class ImageLoader {
     private static ImageLoader sInstance =  new ImageLoader();
+    private final LruCache<String, Bitmap> mBitmapCache;
 
-    private ImageLoader() { }
+    private ImageLoader() {
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 8;
+        mBitmapCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                // The cache size in kilobytes
+                return bitmap.getByteCount() / 1024;
+            }
+        };
+    }
 
     public static ImageLoader getInstance() {
         return sInstance;
@@ -45,9 +57,16 @@ public class ImageLoader {
 
         // Can you think of a way to improve loading of bitmaps
         // that have already been loaded previously??
-        // todo LruCache
-
-        mExecutor.submit(new ImageLoaderTask(url, bitmap -> setImageView(imageView, bitmap)));
+        // https://developer.android.com/topic/performance/graphics/cache-bitmap
+        Bitmap cachedBitmap = mBitmapCache.get(url);
+        if (cachedBitmap == null) {
+            mExecutor.submit(new ImageLoaderTask(url, bitmap -> {
+                mBitmapCache.put(url, bitmap);
+                setImageView(imageView, bitmap);
+            }));
+        } else {
+            setImageView(imageView, cachedBitmap);
+        }
     }
 
     private static byte[] loadImageData(String url) {
