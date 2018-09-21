@@ -26,7 +26,7 @@ public class CakeAdapter extends RecyclerView.Adapter<CakeAdapter.CakeViewHolder
     @Override
     public void onBindViewHolder(@NonNull CakeViewHolder holder, int position) {
         Cake cake = mItems.get(position);
-        // holder.image = // todo image
+        ImageLoader.getInstance().load(cake.getImage(), holder.image);
         holder.title.setText(cake.getTitle());
         holder.desc.setText(cake.getDesc());
 
